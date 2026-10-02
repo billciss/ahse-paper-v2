@@ -118,4 +118,4 @@ To be added upon publication.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE). The data remain under the licences of their providers (DKASC, NREL PVDAQ: CC-BY 4.0, NSF NCAR GDEX).
