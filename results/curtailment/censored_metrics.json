@@ -1,0 +1,210 @@
+{
+ "folds": {
+  "2016": {
+   "weights": {
+    "ServiceStation": 0.335,
+    "SailsCombined": 0.305,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.36
+   },
+   "n_train_uncurtailed": 28131,
+   "heldout_rows_with_neighbour_outage": 600,
+   "heldout_dg_outage_rows": 264
+  },
+  "2017": {
+   "weights": {
+    "ServiceStation": 0.336,
+    "SailsCombined": 0.281,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.383
+   },
+   "n_train_uncurtailed": 26637,
+   "heldout_rows_with_neighbour_outage": 917,
+   "heldout_dg_outage_rows": 42
+  },
+  "2018": {
+   "weights": {
+    "ServiceStation": 0.353,
+    "SailsCombined": 0.307,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.34
+   },
+   "n_train_uncurtailed": 26759,
+   "heldout_rows_with_neighbour_outage": 1180,
+   "heldout_dg_outage_rows": 561
+  },
+  "2019": {
+   "weights": {
+    "ServiceStation": 0.352,
+    "SailsCombined": 0.303,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.345
+   },
+   "n_train_uncurtailed": 26995,
+   "heldout_rows_with_neighbour_outage": 1150,
+   "heldout_dg_outage_rows": 1
+  },
+  "2020": {
+   "weights": {
+    "ServiceStation": 0.345,
+    "SailsCombined": 0.351,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.304
+   },
+   "n_train_uncurtailed": 29067,
+   "heldout_rows_with_neighbour_outage": 505,
+   "heldout_dg_outage_rows": 0
+  },
+  "2021": {
+   "weights": {
+    "ServiceStation": 0.64,
+    "SailsCombined": 0.095,
+    "Laundry": 0.122,
+    "ConnellanAirport": 0.143
+   },
+   "n_train_uncurtailed": 30184,
+   "heldout_rows_with_neighbour_outage": 5277,
+   "heldout_dg_outage_rows": 8
+  },
+  "2022": {
+   "weights": {
+    "ServiceStation": 0.344,
+    "SailsCombined": 0.298,
+    "Laundry": 0.022,
+    "ConnellanAirport": 0.336
+   },
+   "n_train_uncurtailed": 27403,
+   "heldout_rows_with_neighbour_outage": 2544,
+   "heldout_dg_outage_rows": 23
+  },
+  "2023": {
+   "weights": {
+    "ServiceStation": 0.356,
+    "SailsCombined": 0.306,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.339
+   },
+   "n_train_uncurtailed": 27255,
+   "heldout_rows_with_neighbour_outage": 920,
+   "heldout_dg_outage_rows": 3
+  },
+  "2024": {
+   "weights": {
+    "ServiceStation": 0.352,
+    "SailsCombined": 0.293,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.354
+   },
+   "n_train_uncurtailed": 27239,
+   "heldout_rows_with_neighbour_outage": 1262,
+   "heldout_dg_outage_rows": 111
+  },
+  "2025": {
+   "weights": {
+    "ServiceStation": 0.353,
+    "SailsCombined": 0.303,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.344
+   },
+   "n_train_uncurtailed": 26789,
+   "heldout_rows_with_neighbour_outage": 925,
+   "heldout_dg_outage_rows": 109
+  },
+  "2026": {
+   "weights": {
+    "ServiceStation": 0.365,
+    "SailsCombined": 0.295,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.34
+   },
+   "n_train_uncurtailed": 29709,
+   "heldout_rows_with_neighbour_outage": 181,
+   "heldout_dg_outage_rows": 3
+  }
+ },
+ "evaluation": {
+  "fixed_set_07_08h": {
+   "all": {
+    "n": 19325,
+    "MAE": 30.26,
+    "bias": 14.15,
+    "nMAE_%": 15.7
+   },
+   "DG_0-200kW": {
+    "n": 10584,
+    "MAE": 24.17,
+    "bias": 12.06,
+    "nMAE_%": 23.3
+   },
+   "DG_200-400kW": {
+    "n": 7992,
+    "MAE": 38.56,
+    "bias": 16.68,
+    "nMAE_%": 13.38
+   },
+   "DG_400-2000kW": {
+    "n": 749,
+    "MAE": 27.68,
+    "bias": 16.83,
+    "nMAE_%": 6.41
+   }
+  },
+  "by_sky_07_08h": {
+   "clear": {
+    "n": 7492,
+    "MAE": 34.34,
+    "bias": 21.57,
+    "nMAE_%": 12.45
+   },
+   "variable": {
+    "n": 9229,
+    "MAE": 27.43,
+    "bias": 16.83,
+    "nMAE_%": 17.67
+   },
+   "overcast": {
+    "n": 2604,
+    "MAE": 28.55,
+    "bias": -16.7,
+    "nMAE_%": 32.96
+   }
+  },
+  "midday_violations": 0.0082
+ },
+ "conformal_fixed_set": {
+  "clear": {
+   "coverage": 0.892,
+   "mean_width_kW": 151.6,
+   "n": 7492
+  },
+  "variable": {
+   "coverage": 0.897,
+   "mean_width_kW": 97.1,
+   "n": 9229
+  },
+  "overcast": {
+   "coverage": 0.768,
+   "mean_width_kW": 159.9,
+   "n": 2604
+  }
+ },
+ "curtailed_energy_share": {
+  "point": 0.5058,
+  "lower": 0.3175,
+  "upper": 0.5905
+ },
+ "curtailed_energy_share_by_month": {
+  "1": 0.364,
+  "2": 0.382,
+  "3": 0.391,
+  "4": 0.592,
+  "5": 0.621,
+  "6": 0.56,
+  "7": 0.587,
+  "8": 0.654,
+  "9": 0.625,
+  "10": 0.529,
+  "11": 0.476,
+  "12": 0.392
+ }
+}

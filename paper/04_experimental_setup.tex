@@ -1,0 +1,123 @@
+% ============================================================
+% 04_experimental_setup.tex  (revised 2026-10)
+% ============================================================
+
+% ------------------------------------------------------------
+\subsection{Yulara: a curtailed off-grid mini-grid}
+\label{subsec:yulara}
+
+The Yulara installation (Northern Territory, Australia; $25.24^\circ$\,S, $131.04^\circ$\,E,
+492~m, hot desert climate) consists of five PV sites (1.8~MW in total) feeding the
+gas-supplied mini-grid of the Ayers Rock Resort; per-site 5-min measurements and a shared
+weather station are published by the DKA Solar Centre~\cite{dkasc_yulara}. The series used in
+earlier work on this plant, including the first version of the present study, is exactly the
+output of the largest site, Desert Gardens (1{,}058~kW). A site-by-site analysis shows that this
+site is systematically curtailed around solar noon (Fig.~\ref{fig:curtailment}): under high
+irradiance its output relative to the other sites falls to 0.37 at noon while the four other
+sites stay between 0.98 and 1.07, and on clear days the total PV output is held at
+615--630~kW between 11:00 and 15:00. Treating curtailment as censoring of the available power
+(delivered $=\min$(available, cap)) and reconstructing the available power from the
+uncurtailed sites, we estimate that 50.6\% of the energy available at Desert Gardens was
+curtailed (conservative bounds 31.7--59.1\%; 36--39\% in summer, 56--65\% from April to
+September). These figures are inferred from the data; the control logic has not been confirmed
+by the operator.
+
+A curtailed series mixes weather and dispatch decisions: its $k_t$ saturates at the
+curtailment cap instead of the clear-sky envelope, and a forecaster trained on it learns the
+dispatch rule. The forecasting target is therefore the summed output of the four uncurtailed
+sites (Service Station 227~kW, Sails in the Desert 107~kW, Laundry 328~kW and Connellan Airport
+106~kW; 768~kW in total) from 2 April 2016 to 13 May 2020, after which these sites stop
+reporting for six months while Desert Gardens keeps operating.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{fig_curtailment.pdf}
+  \caption{Output of each Yulara site relative to the others under high irradiance, by hour of
+  the day (normalised to 08--09~h). Desert Gardens, the series used in earlier studies, falls to
+  0.37 of its expected share at noon; Connellan Airport's monotone afternoon decline is an
+  orientation effect.}
+  \label{fig:curtailment}
+\end{figure}
+
+% ------------------------------------------------------------
+\subsection{NIST: a grid-connected array in a humid subtropical climate}
+\label{subsec:nist}
+
+The second site is the Ground array of the NIST campus in Gaithersburg, Maryland, USA
+($39.13^\circ$\,N, $77.21^\circ$\,W, 138~m; K\"oppen Cfa), 271~kW$_\mathrm{DC}$, south-facing,
+tilted at $20^\circ$~\cite{boyd2017nist}. Its 1-min inverter AC power and the array's own
+sensors (horizontal thermopile pyranometer, ambient temperature, wind) were obtained from the
+public PVDAQ data lake (system 4902, NIST\_Ground\_1)~\cite{deline2021pvdaq}, whose values are
+identical to the NIST archive for the overlapping year 2016, except the pyranometer, stored in
+millivolts. Its conversion to W\,m$^{-2}$ follows NIST's own constants (one change in May 2016,
+reproduced exactly from the NIST archive); the raw signal drops by about 16\% between 10 and
+17~October~2017 while the calibrated reference cell stays consistent with the AC power, which
+indicates a sensor change with an unknown constant. The series is therefore restricted to
+1~January~2016 -- 10~October~2017. An inverter outage (21~June -- 5~July~2016, 524~h) is
+excluded by the gap rule. Pressure is not measured at the array and is set to the standard
+pressure of the altitude (a constant feature).
+
+% ------------------------------------------------------------
+\subsection{Weather forecasts}
+\label{subsec:gfs_data}
+
+GFS forecasts were retrieved from the NSF NCAR Geoscience Data Exchange (dataset
+d084001~\cite{ncep2015gfs}) as monthly subsets of all runs with forecast hours up to 48~h, for
+April~2016 -- May~2020 at Yulara and January~2016 -- December~2018 at NIST. Every target of
+every test forecast has a GFS value from the run selected by Eq.~\eqref{eq:run}; 0.1\% of the
+NIST training and validation targets have none (the tree models handle these missing values
+natively).
+
+% ------------------------------------------------------------
+\subsection{Partitions, runs and reproducibility}
+\label{subsec:partitions}
+
+Each series is split chronologically into training, validation and test partitions (60/20/20\%
+of the rows; Table~\ref{tab:partitions}). The test partition contains only forecasts issued after
+the end of the validation period. Every configuration is run with and without GFS; the neural
+members of the run with GFS are the checkpoints of the run without GFS, so that the two runs
+differ only by the GFS information. At Yulara, five seeds (42, 1, 2, 3, 4) control the neural
+networks and the tree models. As a sensitivity analysis, a season-balanced validation keeps the
+same test partition but uses every fourth week of the preceding period as validation, dropping
+sequences whose window mixes training and validation rows. Data preparation, models, selection,
+evaluation and every table of this paper are produced by the scripts and configuration files of
+the public repository.
+
+\begin{table}[t]
+  \centering
+  \caption{Data partitions (first and last target day of the forecasts in each partition;
+  number of hourly forecasts issued, each with 24 lead times).}
+  \label{tab:partitions}
+  \small
+  \begin{tabular}{lllll}
+    \toprule
+    Site & Capacity & Training & Validation & Test \\
+    \midrule
+    Yulara (4 sites) & 768 kW & 2016-04-03 -- 2018-09-19 & 2018-09-21 -- 2019-07-17 & 2019-07-19 -- 2020-05-13 \\
+                     &        & 19{,}847 & 5{,}699 & 6{,}650 \\
+    NIST Ground      & 271 kW & 2016-01-02 -- 2017-01-23 & 2017-01-25 -- 2017-06-02 & 2017-06-04 -- 2017-10-10 \\
+                     &        & 8{,}155 & 3{,}040 & 3{,}069 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ------------------------------------------------------------
+\subsection{Evaluation}
+\label{subsec:evaluation}
+
+Forecasts are evaluated in power, $\hat P = \hat k_t P_\mathrm{cs}$, against the measured
+power, on daytime targets ($P_\mathrm{cs}$ above the night threshold; measured zero output by day
+is negligible, 2 of 15{,}671 hours above $10^\circ$ elevation at Yulara). We report the MAE and
+RMSE in kW and as a percentage of the DC capacity (nMAE, nRMSE), and the skill score
+$1 - \mathrm{MSE}/\mathrm{MSE}_\mathrm{ref}$ against day-ahead persistence. The coefficient of
+determination of the power is high for every model because the diurnal cycle dominates it
+(0.84 for day-ahead persistence at Yulara) and discriminates little between models; MAE in
+$k_t$ units is given in the supplementary tables only, because it weighs dawn and dusk hours,
+where $k_t$ is noisy and the power small, as much as midday hours and can reverse the ranking of
+close models.
+
+Forecasts issued on the same day share most of their targets, so losses are first averaged per
+issue day. Differences between two forecasts are assessed with a bootstrap over days (95\%
+interval of the MAE difference, 5{,}000 replicates) and a Diebold--Mariano
+test~\cite{diebold1995comparing} on the daily loss differentials with a Newey--West
+variance~\cite{newey1987simple}.

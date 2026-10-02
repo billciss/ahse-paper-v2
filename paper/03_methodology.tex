@@ -1,0 +1,132 @@
+% ============================================================
+% 03_methodology.tex  (revised 2026-10; written from the code of this repository)
+% ============================================================
+
+This section defines the forecasting task, the target normalisation, the base models, the
+honest per-horizon-block selection that constitutes AHSE, the leak-free use of archived weather
+forecasts and the conformal prediction intervals. Every quantity that is fitted or selected uses
+the training or validation partitions only; the test partition is used once, for the final
+scores.
+
+% ------------------------------------------------------------
+\subsection{Forecasting task}
+\label{subsec:task}
+
+Data are hourly means on a complete local-time grid, each value labelled by the start of its
+interval. A forecast is issued every hour at the time $t_0$ of the last observation and predicts
+the next $H = 24$ hourly values, i.e.\ lead times from 1 to 24~h (intraday to day-ahead). Inputs
+are the $L = 24$ preceding hours of 15 features: the clearness index $k_t$ (defined below),
+measured global horizontal irradiance, temperature, wind speed and direction, pressure, solar
+zenith angle, clear-sky GHI and cyclic encodings of hour, month, day of year and weekday. A
+sequence is discarded if its input or target window touches a data gap longer than one hour;
+shorter gaps are interpolated linearly.
+
+% ------------------------------------------------------------
+\subsection{Clear-sky power and clearness index}
+\label{subsec:pcs}
+
+The target is the clearness index of the PV output, $k_t = P / P_\mathrm{cs}$, clipped to
+$[0, 1.5]$ and set to zero at night. Its denominator describes the clear-sky output of the array:
+\begin{equation}
+  P_\mathrm{cs}(t) = \min\bigl\{c\,G^\mathrm{cs}_\mathrm{POA}(t;\beta,\gamma),\; P_\mathrm{max}\bigr\},
+  \label{eq:pcs}
+\end{equation}
+where $G^\mathrm{cs}_\mathrm{POA}$ is the clear-sky plane-of-array irradiance (Ineichen--Perez
+clear sky~\cite{ineichen2002broadband}, isotropic transposition,
+pvlib~\cite{holmgren2018pvlib}) for tilt $\beta$ and azimuth $\gamma$, $c$ a scale factor and
+$P_\mathrm{max}$ the 99.9th percentile of the training output (inverter limit). $(\beta, \gamma)$
+are chosen on a grid ($\beta \in \{0, 5, \dots, 45\}^\circ$, $\gamma$ in steps of $30^\circ$) and
+$c$ is the median ratio of power to $G^\mathrm{cs}_\mathrm{POA}$ over clear-sky instants of the
+training period only (solar zenith below $75^\circ$ and measured GHI within $\pm10\%$ of the
+clear-sky GHI). Equation~\eqref{eq:pcs} is a power envelope, not an identification of the array
+geometry: at NIST it selects $\beta = 35^\circ$ for an array tilted at $20^\circ$, with a median
+relative error of 6\% on clear-sky instants (4\% at Yulara). All forecasts are converted back to
+power, $\hat P = \hat k_t \, P_\mathrm{cs}$, for evaluation.
+
+% ------------------------------------------------------------
+\subsection{Base models}
+\label{subsec:base}
+
+The pool contains two gradient-boosted tree models, LightGBM~\cite{ke2017lightgbm} and
+XGBoost~\cite{chen2016xgboost} (one regressor per lead time on the flattened input window,
+1{,}000 trees, learning rate 0.05, no early stopping), four neural multi-output forecasters,
+PatchTST~\cite{nie2023patchtst}, N-HiTS~\cite{challu2023nhits}, LSTM~\cite{hochreiter1997lstm}
+and GRU~\cite{cho2014gru} (early stopping on the validation loss), and two references: last-value
+persistence of $k_t$ and day-ahead persistence, which forecasts $k_t(t_0 + h)$ by the value
+observed 24~h earlier. Hyper-parameters are fixed in the configuration files of the repository
+and were not tuned on the test period.
+
+% ------------------------------------------------------------
+\subsection{Honest per-horizon-block selection (AHSE)}
+\label{subsec:hbs}
+
+Errors grow with the lead time and the ranking of the base models changes with it. AHSE
+therefore selects a forecast separately for blocks of lead times
+$\mathcal{B} = \{[1\,\mathrm{h}],\ (1, 6\,\mathrm{h}],\ (6, 24\,\mathrm{h}]\}$, using the
+validation partition only and daytime targets only, exactly as in the final evaluation.
+\begin{enumerate}
+  \item The reference $r$ is the single model with the lowest validation MAE over all lead
+        times.
+  \item For each block $b$, the candidates are every single model and the averages of the
+        $k \in \{2, 3, 4\}$ models with the lowest validation MAE on that block.
+  \item A candidate $c$ may replace $r$ on block $b$ only if the lower bound of the one-sided
+        95\% bootstrap confidence interval of its validation gain
+        $\Delta_b(c) = \mathrm{MAE}_b(r) - \mathrm{MAE}_b(c)$ is positive. Absolute errors are
+        summed per forecast day and whole days are resampled with replacement (1{,}000
+        replicates), which respects the strong dependence between the overlapping forecasts
+        issued on the same day.
+  \item Among eligible candidates the one with the lowest validation MAE is kept; if none is
+        eligible, the block keeps the reference.
+\end{enumerate}
+The guard makes the selection conservative: AHSE combines models only where the validation
+evidence of a gain is statistically clear, and otherwise falls back to the best single model.
+For comparison we also report \emph{AHSE-global}, the selector of the original version of this
+work, which chooses one strategy for all lead times (best model, average, stacking or a
+clearness-index gate) with a fixed minimum-improvement threshold of 0.5\% on all validation
+samples.
+
+% ------------------------------------------------------------
+\subsection{Archived weather forecasts without look-ahead}
+\label{subsec:nwp}
+
+Archived forecasts of the Global Forecast System (GFS, 0.25$^\circ$, runs at 00, 06, 12 and
+18~UTC~\cite{ncep2015gfs}) provide the downward shortwave radiation at the surface and the total
+cloud cover, interpolated bilinearly to the site. GFS stores averages from the start of each
+6-hour cycle; 3-hour means over $(v - 3\,\mathrm{h}, v]$ are recovered as
+$\bar x_{(v-3, v]} = 2\,\bar x_{(v-6, v]} - \bar x_{(v-6, v-3]}$ in the second half of the cycle.
+A forecast issued at $t_0$ may only use the latest run that was \emph{published} by $t_0$,
+\begin{equation}
+  \mathrm{run}(t_0) = \max\{\tau : \tau + \delta \le t_0\}, \qquad \delta = 5\,\mathrm{h},
+  \label{eq:run}
+\end{equation}
+a conservative delay (GFS products are usually available 3.5--4.5~h after the initial time).
+Each target interval $[t, t + 1\,\mathrm{h})$ takes the 3-hour window that contains its
+midpoint. For every lead time the tree models receive the GFS radiation, the cloud cover, the
+clear-sky GHI and a GFS clearness index, defined as the GFS radiation divided by the clear-sky GHI
+averaged over the \emph{same} 3-hour window (dividing a 3-hour mean by an instantaneous clear sky
+distorts mornings and evenings). The GFS clearness index is also offered to the selector as a
+stand-alone candidate, with day-ahead persistence as fallback when the archive has no value. The
+neural members receive no weather forecast, so that runs with and without GFS differ only by
+this information.
+
+% ------------------------------------------------------------
+\subsection{Conformal prediction intervals}
+\label{subsec:conformal}
+
+Point forecasts are complemented by distribution-free intervals. Conformity scores are the
+absolute $k_t$ residuals of daytime targets. Because the selector is fitted on the validation
+partition, its validation residuals would be optimistic; calibration therefore uses out-of-fold
+forecasts obtained by refitting the selector on four of five contiguous folds of validation days
+and predicting the fifth, in the spirit of cross-validation conformal
+methods~\cite{barber2021jackknife}. Scores are calibrated separately (Mondrian
+conformal~\cite{vovk2005algorithmic}) in each cell formed by a block of lead times and a bin of a
+variable known at the issue time: by default the predicted $k_t$ (below 0.4, 0.4--0.8, above
+0.8); with GFS, alternatively the GFS clearness index (validation tertiles). The half-width for
+level $1-\alpha$ is the $\lceil (n+1)(1-\alpha) \rceil$-th smallest of the $n$ scores of the
+cell. Since exchangeability is questionable for weather-driven series, we also apply adaptive
+conformal inference~\cite{gibbs2021adaptive}: the miscoverage level used on day $d$ is
+$\alpha_d = \alpha_{d-1} + \eta\,(\alpha - e_{d-2})$, where $e_{d-2}$ is the share of
+non-covered targets of the forecasts issued two days earlier, whose horizons are entirely observed
+at the time of the update ($\eta = 0.02$, $\alpha_d \in [0.01, 0.5]$). Intervals are assessed by
+coverage, mean width and the interval score
+$W + \tfrac{2}{\alpha}\bigl[(\ell - y)_+ + (y - u)_+\bigr]$.

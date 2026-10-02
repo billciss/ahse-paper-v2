@@ -1,0 +1,328 @@
+{
+ "weights_by_heldout_year": {
+  "2016": {
+   "kt_weighted": {
+    "ServiceStation": 0.274,
+    "SailsCombined": 0.463,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.263
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.28,
+    "SailsCombined": 0.448,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.272
+   }
+  },
+  "2017": {
+   "kt_weighted": {
+    "ServiceStation": 0.283,
+    "SailsCombined": 0.401,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.316
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.287,
+    "SailsCombined": 0.384,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.329
+   }
+  },
+  "2018": {
+   "kt_weighted": {
+    "ServiceStation": 0.293,
+    "SailsCombined": 0.429,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.278
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.297,
+    "SailsCombined": 0.409,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.293
+   }
+  },
+  "2019": {
+   "kt_weighted": {
+    "ServiceStation": 0.289,
+    "SailsCombined": 0.419,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.291
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.294,
+    "SailsCombined": 0.402,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.303
+   }
+  },
+  "2020": {
+   "kt_weighted": {
+    "ServiceStation": 0.296,
+    "SailsCombined": 0.434,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.27
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.298,
+    "SailsCombined": 0.423,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.28
+   }
+  },
+  "2021": {
+   "kt_weighted": {
+    "ServiceStation": 0.576,
+    "SailsCombined": 0.246,
+    "Laundry": 0.063,
+    "ConnellanAirport": 0.116
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.582,
+    "SailsCombined": 0.225,
+    "Laundry": 0.085,
+    "ConnellanAirport": 0.108
+   }
+  },
+  "2022": {
+   "kt_weighted": {
+    "ServiceStation": 0.304,
+    "SailsCombined": 0.402,
+    "Laundry": 0.011,
+    "ConnellanAirport": 0.283
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.257,
+    "SailsCombined": 0.387,
+    "Laundry": 0.063,
+    "ConnellanAirport": 0.293
+   }
+  },
+  "2023": {
+   "kt_weighted": {
+    "ServiceStation": 0.299,
+    "SailsCombined": 0.417,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.283
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.304,
+    "SailsCombined": 0.403,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.293
+   }
+  },
+  "2024": {
+   "kt_weighted": {
+    "ServiceStation": 0.299,
+    "SailsCombined": 0.41,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.291
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.3,
+    "SailsCombined": 0.396,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.304
+   }
+  },
+  "2025": {
+   "kt_weighted": {
+    "ServiceStation": 0.275,
+    "SailsCombined": 0.423,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.302
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.28,
+    "SailsCombined": 0.408,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.312
+   }
+  },
+  "2026": {
+   "kt_weighted": {
+    "ServiceStation": 0.306,
+    "SailsCombined": 0.411,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.283
+   },
+   "kt_wsmooth": {
+    "ServiceStation": 0.31,
+    "SailsCombined": 0.396,
+    "Laundry": 0.0,
+    "ConnellanAirport": 0.294
+   }
+  }
+ },
+ "kt_sum": {
+  "by_level": {
+   "all": {
+    "n": 56098,
+    "MAE": 43.3,
+    "bias": 7.61,
+    "nMAE_%": 21.37
+   },
+   "DG_0-200kW": {
+    "n": 30408,
+    "MAE": 27.29,
+    "bias": 10.52,
+    "nMAE_%": 28.07
+   },
+   "DG_200-400kW": {
+    "n": 20518,
+    "MAE": 59.06,
+    "bias": 11.48,
+    "nMAE_%": 20.31
+   },
+   "DG_400-2000kW": {
+    "n": 5143,
+    "MAE": 74.62,
+    "bias": -25.72,
+    "nMAE_%": 15.68
+   }
+  },
+  "by_sky": {
+   "clear": {
+    "n": 19796,
+    "MAE": 49.32,
+    "bias": 29.17,
+    "nMAE_%": 16.81
+   },
+   "variable": {
+    "n": 23363,
+    "MAE": 31.19,
+    "bias": 14.19,
+    "nMAE_%": 18.94
+   },
+   "overcast": {
+    "n": 12939,
+    "MAE": 55.95,
+    "bias": -37.25,
+    "nMAE_%": 42.29
+   }
+  },
+  "midday_violations": 0.069
+ },
+ "kt_weighted": {
+  "by_level": {
+   "all": {
+    "n": 56098,
+    "MAE": 42.25,
+    "bias": 4.05,
+    "nMAE_%": 20.85
+   },
+   "DG_0-200kW": {
+    "n": 30408,
+    "MAE": 27.27,
+    "bias": 7.48,
+    "nMAE_%": 28.06
+   },
+   "DG_200-400kW": {
+    "n": 20518,
+    "MAE": 57.64,
+    "bias": 6.12,
+    "nMAE_%": 19.83
+   },
+   "DG_400-2000kW": {
+    "n": 5143,
+    "MAE": 67.67,
+    "bias": -26.44,
+    "nMAE_%": 14.22
+   }
+  },
+  "by_sky": {
+   "clear": {
+    "n": 19796,
+    "MAE": 51.35,
+    "bias": 19.94,
+    "nMAE_%": 17.5
+   },
+   "variable": {
+    "n": 23363,
+    "MAE": 30.51,
+    "bias": 7.78,
+    "nMAE_%": 18.53
+   },
+   "overcast": {
+    "n": 12939,
+    "MAE": 49.51,
+    "bias": -27.01,
+    "nMAE_%": 37.43
+   }
+  },
+  "midday_violations": 0.0576
+ },
+ "kt_wsmooth": {
+  "by_level": {
+   "all": {
+    "n": 56098,
+    "MAE": 45.55,
+    "bias": 4.74,
+    "nMAE_%": 22.48
+   },
+   "DG_0-200kW": {
+    "n": 30408,
+    "MAE": 31.41,
+    "bias": 11.07,
+    "nMAE_%": 32.31
+   },
+   "DG_200-400kW": {
+    "n": 20518,
+    "MAE": 60.0,
+    "bias": 4.39,
+    "nMAE_%": 20.64
+   },
+   "DG_400-2000kW": {
+    "n": 5143,
+    "MAE": 69.83,
+    "bias": -33.2,
+    "nMAE_%": 14.67
+   }
+  },
+  "by_sky": {
+   "clear": {
+    "n": 19796,
+    "MAE": 51.48,
+    "bias": 19.66,
+    "nMAE_%": 17.55
+   },
+   "variable": {
+    "n": 23363,
+    "MAE": 34.02,
+    "bias": 5.81,
+    "nMAE_%": 20.66
+   },
+   "overcast": {
+    "n": 12939,
+    "MAE": 57.3,
+    "bias": -20.01,
+    "nMAE_%": 43.31
+   }
+  },
+  "midday_violations": 0.0612
+ },
+ "selected": "kt_weighted",
+ "conformal": {
+  "clear": {
+   "coverage": 0.895,
+   "mean_width_kW": 227.8,
+   "n": 19796
+  },
+  "variable": {
+   "coverage": 0.894,
+   "mean_width_kW": 127.3,
+   "n": 23363
+  },
+  "overcast": {
+   "coverage": 0.779,
+   "mean_width_kW": 291.8,
+   "n": 12939
+  }
+ },
+ "curtailed_energy_share": {
+  "point": 0.4514,
+  "lower": 0.2522,
+  "upper": 0.5846
+ }
+}

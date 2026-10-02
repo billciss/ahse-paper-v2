@@ -1,0 +1,149 @@
+% ============================================================
+% 02_related_work.tex
+% AHSE — Adaptive Honest Selection Ensemble
+% for Multi-Horizon PV Power Forecasting
+% Target journal: Sustainable Energy Technologies and Assessments (SETA)
+% ============================================================
+
+This section reviews four lines of work on which AHSE builds:
+learning architectures for PV forecasting, ensemble methods for energy
+time series, the clearness index as a normalised target, and the use of
+weather forecasts and prediction intervals.
+
+% ------------------------------------------------------------
+\subsection{Machine learning and deep learning for PV forecasting}
+\label{subsec:rw_ml_dl}
+
+Data-driven approaches now dominate short-term PV forecasting, and
+recent reviews confirm the shift away from physical and statistical
+models towards machine-learning and deep-learning
+pipelines~\cite{gupta2025state,kumardhaked2025exploring,yu2024ref,chandel2023techniques}.
+Two families coexist within this paradigm. Gradient-boosting decision
+tree (GBDT) models such as LightGBM~\cite{ke2017lightgbm} and
+XGBoost~\cite{chen2016xgboost}---both rooted in Friedman's gradient
+boosting framework~\cite{friedman2001greedy}---train rapidly, tolerate
+missing and noisy features, and remain competitive on datasets of
+moderate size. Matera~\textit{et~al.}~\cite{matera2023hourly} confirm
+this by showing that ambient meteorological variables fed into a
+network of shallow artificial neural networks already deliver
+competitive hourly forecasts across multiple latitudes, indicating that
+strong PV performance does not necessarily require deep architectures.
+On the deep-learning side, recurrent networks
+(LSTM~\cite{hochreiter1997lstm}, GRU~\cite{cho2014gru}) were the first
+popular choice for sub-hourly lead times but lose effective memory
+beyond one diurnal cycle~\cite{coya2025accuracy}, whereas
+Transformer-based~\cite{vaswani2017attention} PatchTST~\cite{nie2023patchtst}
+and the hierarchical MLP model N-HiTS~\cite{challu2023nhits} improve
+long-horizon accuracy through input patching and multi-rate
+interpolation, at the cost of longer training and weaker performance
+on small datasets~\cite{suresh2025benchmarking,wang2025patchtst}.
+Dimitriadis~\textit{et~al.}~\cite{dimitriadis2025deep} further show
+that a deep model trained across interconnected countries must
+explicitly handle distribution shift to preserve accuracy, and Luo and
+Zhang~\cite{luo2022adaptive} reach a similar conclusion through a
+concept-drift-triggered adaptive LSTM in which re-training fires
+whenever the statistical properties of the incoming data shift.
+Hybrid combinations of these families~\cite{cisse2026optimized,hou2024ref,abumohsen2024combining}
+further illustrate that no single base architecture is universally
+optimal. These studies share one structural limitation: a single
+monolithic model is asked to serve every atmospheric regime, even
+though no architecture has been shown to dominate across both stable
+clear-sky and variable cloud-dominated conditions.
+
+% ------------------------------------------------------------
+\subsection{Ensemble methods for energy forecasting}
+\label{subsec:rw_ensemble}
+
+Ensembles are the natural response to regime sensitivity. Simple
+averaging, inverse-error weighting and Ridge-based stacking reliably
+reduce variance relative to the best single model and have been widely
+applied to PV forecasting in hybrid
+frameworks~\cite{cisse2026optimized,hou2024ref,perera2024regional,abumohsen2024combining},
+including the Yulara plant in the Northern Territory of
+Australia~\cite{cisse2026optimized} (prior work by the present
+authors); however, that study's hybrid component weights remain nearly
+fixed at inference, preventing real reallocation of predictive
+authority when the regime shifts within minutes. The present work
+addresses this limitation by introducing a validation-only selection
+protocol that dynamically activates or deactivates the ensemble. Dynamic
+ensemble selection (DES), initially developed for general classifier
+combination~\cite{cruz2018dynamic}, addresses this by adapting weights
+online, either through local-competence metrics in feature space or
+through learned gating networks and reinforcement
+modules~\cite{zhang2024interpretable,song2025dynamic,achouri2026dynamic,konduru2025irradiance}.
+Santos~\textit{et~al.}~\cite{santos2022irradiance} apply DES directly
+to solar irradiance forecasting and report statistically significant
+gains over static ensembles, confirming the practical value of
+regime-aware model switching. Two recurring issues persist across the
+DES literature, however. First, a non-trivial share of reported gains
+stems from \emph{information leakage}: the combination strategy or
+meta-learner is fit on the same temporal partition used for final
+evaluation, which inflates performance and undermines
+reproducibility~\cite{kaufman2012leakage,kapoor2023leakage}. Second,
+very few studies include an explicit \emph{guard} preventing ensemble
+activation when a single model already dominates; without such a
+guard, an ensemble can be selected purely because it happens to match
+the test partition, a symptom of selection overfitting that only
+becomes visible once the model is deployed. These two issues motivate
+the validation-only, statistically guarded selection introduced in
+Section~\ref{sec:methodology}.
+
+% ------------------------------------------------------------
+\subsection{Clearness index and curtailment}
+\label{subsec:rw_kt}
+
+Physics-informed features offer an alternative to learned regime
+detectors~\cite{pombo2022benchmarking,mayer2021extensive}. The
+clearness index \(k_t = G_\mathrm{GHI}/G_\mathrm{cs}\) normalises
+measured global horizontal irradiance by the clear-sky baseline
+produced by models such as Ineichen--Perez~\cite{ineichen2002broadband},
+here implemented via pvlib-python~\cite{holmgren2018pvlib}. This
+normalisation removes the deterministic diurnal and seasonal cycles
+and isolates the stochastic component driven by cloud dynamics;
+Voyant~\textit{et~al.}~\cite{voyant2025importance} show that the
+choice of clear-sky model materially affects short-term forecasting
+accuracy, and Lauret~\textit{et~al.}~\cite{lauret2022forecasts}
+demonstrate that solar forecasts built on the clear-sky index
+systematically outperform those built on raw irradiance. The clear-sky reference of a PV
+\emph{power} series must describe the array rather than the horizontal
+irradiance: when the measured output is limited by an inverter or by
+the operator, the clearness index saturates and no longer reflects the
+sky. Curtailment is common in weak grids and off-grid systems, yet
+public benchmarks rarely check for it.
+
+% ------------------------------------------------------------
+\subsection{Weather forecasts and prediction intervals}
+\label{subsec:rw_nwp}
+
+Beyond a few hours, statistical forecasts based on past observations
+lose skill quickly and numerical weather prediction (NWP) becomes the
+main source of information~\cite{mayer2021extensive,pombo2022benchmarking}.
+Using NWP in a fair evaluation requires archived forecasts that were
+actually available at the issue time; analyses or forecasts from later
+runs leak future information. On the uncertainty side, probabilistic
+PV forecasting is increasingly
+studied~\cite{xiong2025probabilistic}, and conformal prediction offers
+distribution-free intervals around any point
+forecaster~\cite{vovk2005algorithmic,barber2021jackknife}; adaptive
+conformal inference~\cite{gibbs2021adaptive} relaxes the
+exchangeability assumption and has been applied to hour-ahead PV
+forecasting with Transformers~\cite{suresh2025benchmarking}. Calibrating
+intervals around a \emph{selected} ensemble raises the same leakage
+issue as the selection itself, since in-sample validation residuals
+are optimistic.
+
+% ------------------------------------------------------------
+\subsection*{Positioning of AHSE}
+\label{subsec:rw_positioning}
+
+AHSE differs from the dynamic ensembles reviewed above in three ways.
+Its selection is made per block of lead times, uses the validation
+period only and accepts a combination only when a day-level bootstrap
+interval of the gain excludes zero, so that it falls back to the best
+single model when the evidence is weak. Archived weather forecasts are
+used with an explicit publication delay. Prediction intervals are
+calibrated out-of-fold with respect to the selection. Unlike earlier
+studies of the Yulara plant~\cite{cisse2026optimized}, including the
+first version of this work, the target is checked for curtailment and
+the evaluation is reported in power, on two sites, over several seeds.
+

@@ -1,0 +1,64 @@
+{
+ "cache": "results/yulara_neighbours_gfs/tables/predictions_1h.npz",
+ "folds": 5,
+ "gamma": 0.02,
+ "level_edges": [
+  0.4,
+  0.8
+ ],
+ "spread_edges": [
+  0.050738136972007075,
+  0.10568395023247999
+ ],
+ "spread_models": [
+  "GFS",
+  "GRU",
+  "LSTM",
+  "LightGBM",
+  "N-HiTS",
+  "PatchTST",
+  "SmartPersistence",
+  "XGBoost"
+ ],
+ "oof_val_mae": 0.09250255348502115,
+ "selector_decisions": {
+  "first_hour": {
+   "steps": [
+    0,
+    1
+   ],
+   "chosen": [
+    "XGBoost",
+    "LightGBM",
+    "N-HiTS"
+   ],
+   "val_mae_chosen": 0.06507976861965595,
+   "val_mae_reference": 0.06721877887988671,
+   "lcb_gain": 0.0010886277523963815
+  },
+  "1_to_6h": {
+   "steps": [
+    1,
+    6
+   ],
+   "chosen": [
+    "XGBoost"
+   ],
+   "val_mae_chosen": 0.08678886738694322,
+   "val_mae_reference": 0.08678886738694322,
+   "lcb_gain": 0.0
+  },
+  "6h_to_end": {
+   "steps": [
+    6,
+    24
+   ],
+   "chosen": [
+    "XGBoost"
+   ],
+   "val_mae_chosen": 0.0934780561004104,
+   "val_mae_reference": 0.0934780561004104,
+   "lcb_gain": 0.0
+  }
+ }
+}

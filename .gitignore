@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+env/
+
+# Large binary data (not tracked — see Data Availability section in paper)
+data/
+data_external/
+results/*/models/
+results/*/tables/*.npz
+*.joblib
+*.pt
+*.h5
+*.pkl
+
+# Windows artifacts
+*Zone.Identifier
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Claude internal
+.claude/
+claude_context/
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
+paper/*.bbl
+paper/*.blg
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.pdf

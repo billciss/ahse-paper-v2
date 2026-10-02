@@ -1,0 +1,80 @@
+# ============================================================
+# CONFIGURATION : YULARA UNCURTAILED SITES (SUM OF 4), ULURU, NT, AUSTRALIA
+# ============================================================
+# Dataset: DKASC Yulara per-site 5-min data (Service Station + Sails in the Desert + Laundry + Connellan Airport)
+# Climate: BWh hot desert; off-grid mini-grid, these four sites are NOT curtailed (see results/curtailment)
+# Target : measured AC power sum of the four uncurtailed sites (699 kW DC); mixed orientations -> geometry grid-searched
+# Time   : Australia/Darwin (UTC+09:30, no DST)
+# Built by: scripts/prepare_yulara_sites.py --target neighbours  ->  data/processed/yulara_neighbours_{15min,1h}.csv
+# ============================================================
+
+project:
+  name: "AHSE-PV-Forecasting-Yulara-Uncurtailed"
+  version: "1.0"
+  field: "Electrical Engineering - Smart Grids"
+
+location:
+  site_name: "Yulara_uncurtailed_sum"
+  latitude: -25.24
+  longitude: 131.04
+  altitude: 492
+  timezone: "Australia/Darwin"
+
+forecasting:
+  main_resolution:
+    freq: "15min"
+    lookback_window: 96     # 24h history (gap-free 24-h grid)
+    forecast_horizon: 96    # 24h ahead
+  available_horizons:
+    - name: "15min"
+      freq: "15min"
+      lookback: 96
+      horizon: 96
+    - name: "1h"
+      freq: "1h"
+      lookback: 24
+      horizon: 24
+
+preprocessing:
+  target_column: "Active_Power"
+  use_clear_sky_index: true
+  clear_sky_model: "ineichen"
+  night_threshold_ghi: 10
+  kt_epsilon: 1.0           # kW scale, same as Yulara
+  kt_clip_max: 1.5
+  scaler_type: "standard"
+  fill_method: "interpolate"
+  gap_policy: "exclude"          # drop sequences touching gaps longer than max_interpolation_gap
+  max_interpolation_gap: "1h"
+
+data_split:
+  train_ratio: 0.6
+  val_ratio: 0.2
+  test_ratio: 0.2
+  shuffle: false
+
+features:
+  weather:
+    - "Temperature"
+    - "Pressure"
+    - "Wind_Speed"
+    - "GHI"
+  temporal:
+    - "hour_sin"
+    - "hour_cos"
+    - "month_sin"
+    - "month_cos"
+    - "day_of_year_sin"
+    - "day_of_year_cos"
+  physics:
+    - "clear_sky_ghi"
+    - "zenith_angle"
+    - "kt"
+
+paths:
+  raw_data: "C:/Users/billc/Downloads (DKASC per-site files)"
+  processed_data: "data/processed"
+  results: "results"
+  models: "results/models"
+  figures: "results/figures"
+  tables: "results/tables"

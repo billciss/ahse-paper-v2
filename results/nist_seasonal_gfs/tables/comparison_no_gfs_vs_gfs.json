@@ -1,0 +1,154 @@
+{
+ "tests": {
+  "AHSE: A vs B": {
+   "mae_a": 0.22722979008383246,
+   "mae_b": 0.15852556701580134,
+   "gain_b_over_a": 0.06870422306803112,
+   "gain_ci95": [
+    0.053507675088476814,
+    0.08526750124612162
+   ],
+   "dm_stat": 5.12950720785602,
+   "dm_p_two_sided": 2.90501648674785e-07,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "AHSE_global: A vs B": {
+   "mae_a": 0.22722979008383246,
+   "mae_b": 0.15748936835375293,
+   "gain_b_over_a": 0.06974042173007952,
+   "gain_ci95": [
+    0.054258396006718494,
+    0.0865318501448262
+   ],
+   "dm_stat": 5.1181121861216115,
+   "dm_p_two_sided": 3.0860902692163407e-07,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "LightGBM: A vs B": {
+   "mae_a": 0.22969429986670553,
+   "mae_b": 0.15878630494892432,
+   "gain_b_over_a": 0.07090799491778121,
+   "gain_ci95": [
+    0.05467064307862383,
+    0.08840363857297753
+   ],
+   "dm_stat": 4.797810782888934,
+   "dm_p_two_sided": 1.6040920265200805e-06,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "XGBoost: A vs B": {
+   "mae_a": 0.22722979008383246,
+   "mae_b": 0.1604390788851845,
+   "gain_b_over_a": 0.06679071119864796,
+   "gain_ci95": [
+    0.05100686596546272,
+    0.08395113282557547
+   ],
+   "dm_stat": 4.81259439693025,
+   "dm_p_two_sided": 1.4898346263253527e-06,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "XGBoost (A) vs AHSE (B)": {
+   "mae_a": 0.22722979008383246,
+   "mae_b": 0.15852556701580134,
+   "gain_b_over_a": 0.06870422306803112,
+   "gain_ci95": [
+    0.053507675088476814,
+    0.08526750124612162
+   ],
+   "dm_stat": 5.12950720785602,
+   "dm_p_two_sided": 2.90501648674785e-07,
+   "n_days": 128,
+   "nw_lags": 4
+  }
+ },
+ "block_decisions": {
+  "A": {
+   "reference": "XGBoost",
+   "decisions": {
+    "first_hour": {
+     "steps": [
+      0,
+      1
+     ],
+     "chosen": [
+      "XGBoost"
+     ],
+     "val_mae_chosen": 0.13495869796431909,
+     "val_mae_reference": 0.13495869796431909,
+     "lcb_gain": 0.0
+    },
+    "1_to_6h": {
+     "steps": [
+      1,
+      6
+     ],
+     "chosen": [
+      "XGBoost"
+     ],
+     "val_mae_chosen": 0.23960181366284333,
+     "val_mae_reference": 0.23960181366284333,
+     "lcb_gain": 0.0
+    },
+    "6h_to_end": {
+     "steps": [
+      6,
+      24
+     ],
+     "chosen": [
+      "XGBoost"
+     ],
+     "val_mae_chosen": 0.2901103827702471,
+     "val_mae_reference": 0.2901103827702471,
+     "lcb_gain": 0.0
+    }
+   }
+  },
+  "B": {
+   "reference": "LightGBM",
+   "decisions": {
+    "first_hour": {
+     "steps": [
+      0,
+      1
+     ],
+     "chosen": [
+      "LightGBM"
+     ],
+     "val_mae_chosen": 0.11640425328339442,
+     "val_mae_reference": 0.11640425328339442,
+     "lcb_gain": 0.0
+    },
+    "1_to_6h": {
+     "steps": [
+      1,
+      6
+     ],
+     "chosen": [
+      "XGBoost",
+      "LightGBM"
+     ],
+     "val_mae_chosen": 0.1478109723959391,
+     "val_mae_reference": 0.15017367124558326,
+     "lcb_gain": 0.0008265150727693492
+    },
+    "6h_to_end": {
+     "steps": [
+      6,
+      24
+     ],
+     "chosen": [
+      "LightGBM"
+     ],
+     "val_mae_chosen": 0.16595094035963331,
+     "val_mae_reference": 0.16595094035963331,
+     "lcb_gain": 0.0
+    }
+   }
+  }
+ }
+}

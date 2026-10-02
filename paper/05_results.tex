@@ -1,0 +1,185 @@
+% ============================================================
+% 05_results.tex  (revised 2026-10; numbers from results/power_summary and the run tables)
+% ============================================================
+
+\subsection{Point forecasts}
+\label{subsec:res_point}
+
+Tables~\ref{tab:yulara} and~\ref{tab:nist} report the test errors in power. At Yulara the values
+are means and standard deviations over five seeds; at NIST a single seed is reported.
+
+\begin{table}[t]
+  \centering
+  \caption{Yulara (four uncurtailed sites, 768~kW), test period 2019-07-19 -- 2020-05-13, lead
+  times 1--24~h, daytime targets. Mean $\pm$ standard deviation over five seeds. Skill: MSE
+  skill score against day-ahead persistence.}
+  \label{tab:yulara}
+  \small
+  \begin{tabular}{lcccccc}
+    \toprule
+    & \multicolumn{3}{c}{without GFS} & \multicolumn{3}{c}{with GFS} \\
+    \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+    Model & MAE (kW) & nRMSE (\%) & Skill & MAE (kW) & nRMSE (\%) & Skill \\
+    \midrule
+    AHSE                   & \textbf{36.18 $\pm$ 0.32} & \textbf{8.21} & \textbf{0.36} & \textbf{31.32 $\pm$ 0.05} & \textbf{6.95} & \textbf{0.54} \\
+    AHSE-global            & 37.37 $\pm$ 0.48 & 8.23 & 0.36 & 31.34 $\pm$ 0.06 & 6.95 & 0.54 \\
+    XGBoost                & 41.35 $\pm$ 0.12 & 8.61 & 0.30 & 31.34 $\pm$ 0.06 & 6.95 & 0.54 \\
+    LightGBM               & 42.07 $\pm$ 0.07 & 8.76 & 0.27 & 32.36 $\pm$ 0.03 & 7.08 & 0.53 \\
+    PatchTST               & 40.02 $\pm$ 0.89 & 8.77 & 0.27 & -- & -- & -- \\
+    N-HiTS                 & 40.62 $\pm$ 1.17 & 8.86 & 0.25 & -- & -- & -- \\
+    GRU                    & 40.41 $\pm$ 0.94 & 8.62 & 0.30 & -- & -- & -- \\
+    LSTM                   & 42.50 $\pm$ 1.77 & 9.10 & 0.22 & -- & -- & -- \\
+    GFS clearness index    & -- & -- & -- & 46.54 & 9.58 & 0.13 \\
+    Day-ahead persistence  & 40.56 & 10.27 & 0 & 40.56 & 10.27 & 0 \\
+    \bottomrule
+  \end{tabular}
+
+  \smallskip
+  \footnotesize The neural members do not use GFS; their errors are identical in both columns.
+\end{table}
+
+\begin{table}[t]
+  \centering
+  \caption{NIST Ground array (271~kW), test period 2017-06-04 -- 2017-10-10, lead times
+  1--24~h, daytime targets, seed 42.}
+  \label{tab:nist}
+  \small
+  \begin{tabular}{lcccccc}
+    \toprule
+    & \multicolumn{3}{c}{without GFS} & \multicolumn{3}{c}{with GFS} \\
+    \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+    Model & MAE (kW) & nRMSE (\%) & Skill & MAE (kW) & nRMSE (\%) & Skill \\
+    \midrule
+    AHSE                   & \textbf{27.55} & \textbf{14.52} & \textbf{0.41} & \textbf{20.39} & \textbf{10.80} & \textbf{0.68} \\
+    AHSE-global, XGBoost   & 27.84 & 14.79 & 0.39 & 20.47 & 10.81 & 0.68 \\
+    LightGBM               & 28.47 & 15.26 & 0.35 & 20.79 & 11.06 & 0.66 \\
+    GRU                    & 28.89 & 14.75 & 0.39 & -- & -- & -- \\
+    LSTM                   & 29.67 & 15.06 & 0.37 & -- & -- & -- \\
+    PatchTST               & 29.97 & 15.87 & 0.30 & -- & -- & -- \\
+    N-HiTS                 & 30.51 & 15.67 & 0.32 & -- & -- & -- \\
+    GFS clearness index    & -- & -- & -- & 28.63 & 14.26 & 0.43 \\
+    Day-ahead persistence  & 34.13 & 18.96 & 0 & 34.13 & 18.96 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Weather forecasts are the main source of skill.}
+Adding GFS covariates lowers the MAE of AHSE from 36.18 to 31.32~kW at Yulara (nMAE 4.71\%
+$\to$ 4.08\%) and from 27.55 to 20.39~kW at NIST (10.17\% $\to$ 7.52\%). The gain is significant
+for every seed at Yulara (4.4 to 5.2~kW; Diebold--Mariano statistic 3.2--3.8 on daily losses) and
+at NIST (7.17~kW, 95\% interval [5.51, 8.92]~kW, DM 5.7). It is larger in the humid subtropical
+climate of Maryland, where the clearness index is far less persistent from one day to the next
+than in the desert, and it grows with the lead time (Fig.~\ref{fig:leadtime}): past observations
+only inform the first hours, whereas the weather forecast carries information for the whole
+horizon. Used alone, the GFS clearness index is worse than day-ahead persistence at Yulara and
+better at NIST; its value comes from the learned combination with recent observations.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig_mae_leadtime.pdf}
+  \caption{Test MAE in kW by lead time, without GFS (dashed) and with GFS (solid), seed 42. Day-ahead
+  persistence is shown for reference.}
+  \label{fig:leadtime}
+\end{figure}
+
+\paragraph{AHSE combines models only when the evidence supports it.}
+Without GFS at Yulara, the selector keeps N-HiTS as reference and combines models on every block
+(LightGBM, XGBoost and N-HiTS on the first hour; four models on 1--6~h; day-ahead persistence,
+N-HiTS and XGBoost beyond 6~h). AHSE then beats the best single model of every seed, which is
+N-HiTS, GRU or PatchTST depending on the seed, by 2.8 to 3.9~kW (7 to 10\%; DM 5.0--7.2), and
+AHSE-global by 1.2~kW on average. With GFS, the GFS-fed XGBoost dominates the pool: the guard keeps
+it alone from the second hour on, and AHSE equals it (differences of at most 0.05~kW). At NIST,
+AHSE is not significantly different from XGBoost, with or without GFS (gains of 0.28 and
+0.08~kW, $p = 0.22$ and $0.48$), and is significantly better than LightGBM. AHSE is therefore
+never significantly worse than the best member chosen in hindsight on the test set; it improves
+on it when the pool contains complementary members and falls back to it otherwise. The seed
+variability of AHSE (0.32~kW without GFS, 0.05~kW with GFS) is an order of magnitude smaller
+than these differences.
+
+\paragraph{A metric caveat.}
+At Yulara without GFS, day-ahead persistence has a lower MAE (40.6~kW) than XGBoost and LightGBM,
+but a much larger RMSE (10.3\% against 8.6\% of capacity): in a sunny desert the clearness index
+is very persistent and the MAE rewards forecasts that are exact on most days and badly wrong on
+the few cloudy ones. Conversely, a MAE computed on $k_t$ instead of power gives the same weight
+to dawn and dusk hours as to noon; on that scale AHSE appeared significantly behind XGBoost at
+NIST without GFS, a difference that disappears in power. Conclusions should therefore rest on
+power errors and include a squared-error measure.
+
+% ------------------------------------------------------------
+\subsection{Prediction intervals}
+\label{subsec:res_intervals}
+
+\begin{table}[t]
+  \centering
+  \caption{90\% prediction intervals of AHSE on the test period ($k_t$ units; out-of-fold
+  calibration on the validation period). IS: interval score (lower is better).}
+  \label{tab:intervals}
+  \small
+  \begin{tabular}{llccc}
+    \toprule
+    Configuration & Method & Coverage & Width & IS \\
+    \midrule
+    Yulara, no GFS & split, pooled            & 0.909 & 0.604 & 0.864 \\
+                   & split, Mondrian          & 0.910 & 0.525 & 0.800 \\
+                   & adaptive (ACI), Mondrian & 0.901 & 0.495 & 0.805 \\
+    Yulara, GFS    & split, pooled            & 0.903 & 0.491 & 0.728 \\
+                   & split, Mondrian          & 0.907 & 0.420 & 0.657 \\
+                   & adaptive (ACI), Mondrian & 0.902 & 0.413 & 0.656 \\
+                   & split, binned by GFS     & 0.916 & 0.440 & \textbf{0.627} \\
+    NIST, GFS      & split, Mondrian          & 0.921 & 0.790 & 1.002 \\
+                   & adaptive (ACI), Mondrian & 0.910 & 0.750 & 0.998 \\
+                   & split, binned by GFS     & 0.907 & 0.690 & \textbf{0.949} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+All calibrated intervals reach their nominal coverage on the test period
+(Table~\ref{tab:intervals}). At Yulara, Mondrian calibration by lead-time block and forecast
+level lowers the interval score by 7--10\% against pooled calibration and adaptive conformal
+inference brings the coverage closest to the nominal level; at NIST the Mondrian cells do not
+improve on pooled calibration (interval score 1.002 against 0.998). GFS narrows the 90\%
+intervals by 17\% at Yulara (0.413 against 0.495 with ACI). Binning the calibration by the GFS
+clearness index, a quantity known at the issue time, gives the best interval score at both sites
+and raises the coverage on variable days (0.82 against 0.77 at Yulara). Coverage remains below
+nominal on overcast and variable days (0.62--0.82 at Yulara, depending on the configuration and
+the method), a
+limitation shared by marginal conformal methods when the conditioning event is defined by the
+outcome.
+
+% ------------------------------------------------------------
+\subsection{Sensitivity analyses}
+\label{subsec:res_sensitivity}
+
+\paragraph{Season-balanced validation.}
+With the season-balanced validation (Section~\ref{subsec:partitions}), the test MAE of AHSE is
+38.11 instead of 36.53~kW at Yulara without GFS ($p = 0.015$), 30.86 instead of 31.38~kW with GFS
+(n.s.), and 29.16 instead of 27.55~kW at NIST without GFS ($p = 0.05$; 20.33 against 20.39~kW
+with GFS, n.s.), all for seed 42. The single tree models improve, because their training weeks
+then extend up to the start of the test period, but the selector keeps XGBoost alone and AHSE
+loses the benefit of combining members. The chronological protocol is therefore retained.
+
+\paragraph{Foundation model.}
+A zero-shot time-series foundation model (Chronos-2, 7-day context) reaches a test MAE of 0.116 in
+$k_t$ units at Yulara without GFS, against 0.107 for AHSE, i.e.\ it does not replace a model
+trained on the site.
+
+% ------------------------------------------------------------
+\subsection{Discussion}
+\label{subsec:discussion}
+
+The original claim of this work was that a regime-gated ensemble of six learners outperforms
+every single model on Yulara. Three findings revise it. First, the Yulara series used in that
+claim is curtailed: forecasting it amounts to forecasting a dispatch rule, and an honest benchmark
+must use uncurtailed output or reconstructed available power. Second, once the target is
+physical, the ensemble's advantage is real but moderate (7--10\% without weather forecasts at
+Yulara, none at NIST), whereas archived numerical weather forecasts, used without look-ahead,
+reduce the error by 13\% at Yulara and 26\% at NIST. Third, a statistically guarded selection is
+what makes the ensemble safe: it never degraded the best member in our experiments, while the
+single-strategy selector of the original version, guarded only by a fixed 0.5\% threshold, was
+1.2~kW worse at Yulara without GFS. For an off-grid
+mini-grid such as Yulara, the relevant improvement is the GFS-informed forecast together with
+calibrated intervals, which size the spinning reserve and the curtailment headroom of the gas
+generators directly.
+
+Limitations: one test period per site (10 months at Yulara, 4 months at NIST), a single seed at
+NIST, hourly resolution only, and point GFS forecasts rather than an ensemble prediction system.

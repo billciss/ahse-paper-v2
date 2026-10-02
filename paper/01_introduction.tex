@@ -1,0 +1,55 @@
+% ============================================================
+% 01_introduction.tex  (revised 2026-10)
+% ============================================================
+
+Global energy systems are being reshaped by the diffusion of solar photovoltaic (PV) generation.
+Cumulative PV capacity reached approximately $1{,}865~\mathrm{GW}$ by the end of~2024, with a
+record $452~\mathrm{GW}$ added during that year~\cite{irena2025}. In large interconnected grids,
+forecast errors are absorbed by reserves and markets; in small and off-grid microgrids, where PV
+competes with a few thermal generators, they translate directly into spinning reserve, fuel
+consumption and curtailment. Forecasts covering the next hours to the next day are therefore an
+operational input of microgrid dispatch.
+
+Machine-learning forecasters and their ensembles are routinely reported to outperform single
+models, but three aspects of their evaluation are often fragile. First, the combination strategy
+or meta-learner is sometimes fitted on the period used for the final scores, which inflates the
+reported gains~\cite{kaufman2012leakage,kapoor2023leakage}. Second, the measured PV output is
+taken as the physical resource although it may include operator decisions such as curtailment.
+Third, gains are frequently reported on normalised targets, a single seed and a single site,
+without tests that account for the strong dependence between overlapping multi-step forecasts.
+
+This paper revisits the Adaptive Honest Selection Ensemble (AHSE), first proposed for the Yulara
+plant in Australia, with these issues in mind. We found that the Yulara series used in earlier
+studies, including the first version of this work, is the output of a site that is curtailed
+around noon; the corresponding claims are withdrawn and the study is rebuilt on uncurtailed data.
+The contributions are:
+
+\begin{enumerate}
+  \item \textbf{A curtailment-aware benchmark.} We document the curtailment of the Desert Gardens
+  site from the public per-site data (about half of its available energy), and use the four
+  uncurtailed sites of the same mini-grid as target, with a second, grid-connected site in a
+  humid subtropical climate (NIST, USA) obtained from a public data lake.
+
+  \item \textbf{Honest per-horizon-block selection.} AHSE selects, for each block of lead times,
+  a single model or an average of the best models, and accepts a combination only when the lower
+  bound of a day-level bootstrap interval of its validation gain is positive. All decisions use
+  the validation period only.
+
+  \item \textbf{Leak-free weather forecasts.} Archived GFS forecasts enter the tree members and
+  the candidate pool using only the run published before the issue time, with a conservative
+  five-hour delay.
+
+  \item \textbf{Calibrated uncertainty.} Out-of-fold, Mondrian and adaptive conformal intervals
+  are calibrated without touching the test period, optionally by a weather-forecast variable.
+
+  \item \textbf{Transparent evaluation.} Errors in power and as a share of capacity, a
+  squared-error skill score against day-ahead persistence, five seeds, day-level bootstrap and
+  Diebold--Mariano tests, and a sensitivity analysis of the validation design; all scripts and
+  result tables are public.
+\end{enumerate}
+
+Section~\ref{sec:related} reviews related work. Section~\ref{sec:methodology} defines the
+forecasting task, the selection protocol, the use of weather forecasts and the prediction
+intervals. Section~\ref{sec:setup} describes the sites, the curtailment analysis and the
+evaluation protocol. Section~\ref{sec:results} reports and discusses the results and
+Section~\ref{sec:conclusion} concludes.

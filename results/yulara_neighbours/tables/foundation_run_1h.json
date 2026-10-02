@@ -1,0 +1,11 @@
+{
+ "model": "amazon/chronos-2",
+ "device": "cpu",
+ "seconds": {
+  "chronos2_ctx1d": 45.0,
+  "chronos2_ctx7d": 126.8,
+  "chronos2_ctx7d_cov": 373.0
+ },
+ "n_test": 6650,
+ "horizon_steps": 24
+}

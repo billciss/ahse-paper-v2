@@ -1,0 +1,80 @@
+# ============================================================
+# CONFIGURATION : NIST CAMPUS PV, GAITHERSBURG, MARYLAND, USA
+# ============================================================
+# Dataset: Healy (2020), doi:10.18434/M3S67G ; Boyd et al., J. Res. NIST 122:040 (2017)
+# Climate: Cfa humid subtropical — contrast to Yulara BWh
+# Target : measured inverter AC power (kW) of the Ground array (271 kW DC, tilt 20°, az 180°)
+# Time   : loggers use Local Standard Time all year -> fixed UTC-05:00, no DST
+# Built by: scripts/prepare_nist.py  ->  data/processed/nist_{15min,1h}.csv
+# ============================================================
+
+project:
+  name: "AHSE-PV-Forecasting-NIST-MD"
+  version: "1.0"
+  field: "Electrical Engineering - Smart Grids"
+
+location:
+  site_name: "NIST_Gaithersburg_Ground"
+  latitude: 39.1319
+  longitude: -77.2141
+  altitude: 138
+  timezone: "Etc/GMT+5"     # POSIX sign: UTC-05:00 (EST), matches logger LST
+
+forecasting:
+  main_resolution:
+    freq: "15min"
+    lookback_window: 96     # 24h history (gap-free 24-h grid)
+    forecast_horizon: 96    # 24h ahead
+  available_horizons:
+    - name: "15min"
+      freq: "15min"
+      lookback: 96
+      horizon: 96
+    - name: "1h"
+      freq: "1h"
+      lookback: 24
+      horizon: 24
+
+preprocessing:
+  target_column: "Active_Power"
+  use_clear_sky_index: true
+  clear_sky_model: "ineichen"
+  night_threshold_ghi: 10
+  kt_epsilon: 1.0           # kW scale, same as Yulara
+  kt_clip_max: 1.5
+  scaler_type: "standard"
+  fill_method: "interpolate"
+  gap_policy: "exclude"          # drop sequences touching gaps longer than max_interpolation_gap
+  max_interpolation_gap: "1h"
+
+data_split:
+  train_ratio: 0.6
+  val_ratio: 0.2
+  test_ratio: 0.2
+  shuffle: false
+
+features:
+  weather:
+    - "Temperature"
+    - "Pressure"
+    - "Wind_Speed"
+    - "GHI"
+  temporal:
+    - "hour_sin"
+    - "hour_cos"
+    - "month_sin"
+    - "month_cos"
+    - "day_of_year_sin"
+    - "day_of_year_cos"
+  physics:
+    - "clear_sky_ghi"
+    - "zenith_angle"
+    - "kt"
+
+paths:
+  raw_data: "data_external/nist"
+  processed_data: "data/processed"
+  results: "results"
+  models: "results/models"
+  figures: "results/figures"
+  tables: "results/tables"

@@ -1,0 +1,218 @@
+%% ============================================================
+%% Article — Sustainable Energy Technologies and Assessments (SETA)
+%% AHSE: Adaptive Honest Selection Ensemble with Clearness-Index
+%%       Gating for Multi-Horizon Photovoltaic Power Forecasting
+%%
+%% Author   : Bilali Boureima Cissé
+%% Target   : SETA (Elsevier, Q1, IF ~8.67, ISSN 2213-1388)
+%% Template : Elsevier CAS Standard (elsarticle)
+%% ============================================================
+
+\documentclass[preprint,12pt]{elsarticle}
+
+%% ------------------------------------------------------------
+%% Core packages
+%% ------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}            % allow line breaks anywhere in long URLs
+\usepackage{cleveref}
+
+%% Algorithms — required by Section 3 (HSP pseudocode)
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\SetKwInput{KwIn}{Input}
+\SetKwInput{KwOut}{Output}
+
+%% ------------------------------------------------------------
+%% Figure path (figures live in ./figures/)
+%% ------------------------------------------------------------
+\graphicspath{{figures/}}
+
+%% ------------------------------------------------------------
+%% Float tuning — prevent figures from piling up at end
+%% ------------------------------------------------------------
+\usepackage{placeins}          % \FloatBarrier command
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.50}
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\floatpagefraction}{0.70}
+\setcounter{totalnumber}{6}
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{2}
+
+%% ------------------------------------------------------------
+%% Target journal (appears in preprint header)
+%% ------------------------------------------------------------
+\journal{Sustainable Energy Technologies and Assessments}
+
+%% ============================================================
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Honest ensemble selection with archived weather forecasts and
+       conformal intervals for photovoltaic power forecasting:
+       a curtailment-aware evaluation on two sites}
+
+\author[1,2]{Bilali Boureima Cissé}
+\ead{billciss@whu.edu.cn}
+
+\author[1,2]{Ghamgeen Izat Rashed\corref{corr}}
+\ead{ghamgeen@whu.edu.cn}
+\cortext[corr]{Corresponding author.}
+
+\affiliation[1]{organization={Hubei Engineering and Technology Research
+                              Centre for AC/DC Intelligent Distribution
+                              Network, School of Electrical Engineering
+                              and Automation, Wuhan University},
+                city={Wuhan},
+                postcode={430072},
+                state={Hubei},
+                country={China}}
+
+\affiliation[2]{organization={School of Electrical Engineering and
+                              Automation, Wuhan University},
+                city={Wuhan},
+                postcode={430072},
+                state={Hubei},
+                country={China}}
+
+\begin{abstract}
+Short-term photovoltaic (PV) forecasts drive the dispatch of microgrids, but reported gains of
+machine-learning ensembles often rest on fragile evaluations. This paper revisits the Adaptive
+Honest Selection Ensemble (AHSE) and rebuilds its evaluation. A site-by-site analysis of the
+public Yulara (Australia) data shows that the series used in earlier studies is curtailed around
+noon, with about half of its available energy (31.7--59.1\%) not delivered; the benchmark is
+therefore rebuilt on the four uncurtailed sites of the same off-grid mini-grid (768~kW) and
+extended to a grid-connected array in a humid subtropical climate (NIST, USA; 271~kW). AHSE
+selects, for each block of lead times, a single model or an average of the best of eight
+members (gradient-boosted trees, PatchTST, N-HiTS, LSTM, GRU and persistence references) and
+accepts a combination only when a day-level bootstrap bound of its validation gain is positive.
+Archived Global Forecast System (GFS) forecasts are used without look-ahead, and conformal
+prediction intervals are calibrated out-of-fold with respect to the selection. For hourly
+forecasts with lead times of 1--24~h, evaluated in power, GFS lowers the mean absolute error of
+AHSE by 13\% at Yulara (36.2 to 31.3~kW, significant for each of five seeds) and by 26\% at NIST
+(27.6 to 20.4~kW). Without weather forecasts, AHSE beats the best single model of every seed by
+7--10\% at Yulara; when one member dominates, it falls back to it and is never significantly
+worse than the best member. The 90\% intervals reach 0.90--0.92 coverage and weather forecasts
+narrow them by 17\%. The results show that archived weather forecasts and a curtailment-aware,
+power-based evaluation matter more than the choice of the learner.
+\end{abstract}
+
+%% ------------------------------------------------------------
+%% Graphical Abstract (optional but recommended by SETA).
+%% Schematic of the revised pipeline (scripts/make_paper_figures.py).
+%% ------------------------------------------------------------
+\begin{graphicalabstract}
+\centering
+\includegraphics[width=0.95\textwidth]{fig_pipeline.pdf}
+\end{graphicalabstract}
+
+%% ------------------------------------------------------------
+%% Research Highlights (required by SETA).
+%% 3-5 bullets, each a single sentence of at most 85 characters.
+%% ------------------------------------------------------------
+\begin{highlights}
+\item The Yulara series of earlier forecasting studies is curtailed (half of its energy).
+\item Benchmark rebuilt on uncurtailed sites and a second climate, evaluated in power.
+\item Per-horizon ensemble selection accepts a combination only under a bootstrap guard.
+\item Archived GFS forecasts used without look-ahead cut the MAE by 13--26\%.
+\item Out-of-fold conformal intervals reach nominal coverage; GFS narrows them by 17\%.
+\end{highlights}
+
+\begin{keyword}
+Solar power forecasting \sep
+Ensemble selection \sep
+Numerical weather prediction \sep
+Conformal prediction \sep
+Curtailment \sep
+Off-grid microgrid \sep
+Forecast evaluation
+\end{keyword}
+
+\end{frontmatter}
+
+%% ============================================================
+\section{Introduction}
+\label{sec:intro}
+\input{01_introduction}
+\FloatBarrier
+
+%% ============================================================
+\section{Related Work}
+\label{sec:related}
+\input{02_related_work}
+\FloatBarrier
+
+%% ============================================================
+\section{Methodology}
+\label{sec:methodology}
+\input{03_methodology}
+\FloatBarrier
+
+%% ============================================================
+\section{Data Description and Experimental Configuration}
+\label{sec:setup}
+\input{04_experimental_setup}
+\FloatBarrier
+
+%% ============================================================
+\section{Results and Discussion}
+\label{sec:results}
+\input{05_results}
+\FloatBarrier
+
+%% ============================================================
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+\input{07_conclusion}
+\FloatBarrier
+
+%% ============================================================
+\section*{Acknowledgements}
+The authors gratefully acknowledge the Desert Knowledge Australia Solar Centre (DKASC) for public
+access to the Yulara data~\cite{dkasc_yulara}, NIST and the NREL PVDAQ team for the NIST array
+data~\cite{boyd2017nist,deline2021pvdaq}, and the NSF NCAR Geoscience Data Exchange for the
+archived GFS forecasts~\cite{ncep2015gfs}.
+Computational resources were provided by the School of Electrical
+Engineering at Wuhan University.
+
+\section*{Funding}
+This work was supported by the National Key R\&D Program of China,
+``Intergovernmental International Science and Technology Innovation
+Cooperation'' Key Special Project (Project No.\ 2024YFE0115600).
+
+\section*{Declaration of Competing Interest}
+The authors declare that they have no known competing financial
+interests or personal relationships that could have appeared to
+influence the work reported in this paper.
+
+\section*{CRediT Authorship Contribution Statement}
+\textbf{Bilali Boureima Cissé}: Conceptualization, Methodology,
+Software, Formal analysis, Investigation, Data curation, Writing --
+original draft, Writing -- review \& editing, Visualization.
+\textbf{Ghamgeen Izat Rashed}: Supervision, Writing -- review \&
+editing, Funding acquisition.
+
+\section*{Data and Code Availability}
+The Yulara per-site data are available from the DKASC portal
+(\url{https://dkasolarcentre.com.au/download?location=yulara}); the NIST Ground array data from the
+PVDAQ data lake (\url{https://doi.org/10.25984/1846021}, system 4902); the GFS archive from NSF NCAR
+GDEX (\url{https://doi.org/10.5065/D65D8PWK}). The code, configuration files, data-preparation and
+download scripts, and the tables backing every number of this paper are available at
+\url{https://github.com/billciss/ahse-paper-v2}.
+
+%% ============================================================
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+
+\end{document}

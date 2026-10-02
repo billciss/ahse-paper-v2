@@ -1,0 +1,12 @@
+,PatchTST,N-HiTS,LSTM,GRU,LightGBM,XGBoost,Persistence,SmartPersistence,GFS,AHSE_global,AHSE
+PatchTST,1.0,,,,,,,,,,
+N-HiTS,,1.0,,,,,,,,,
+LSTM,,,1.0,,,,,,,,
+GRU,,,,1.0,,,,,,,
+LightGBM,,,,,1.0,,,,,,
+XGBoost,,,,,,1.0,,,,,
+Persistence,,,,,,,1.0,,,,
+SmartPersistence,,,,,,,,1.0,,,
+GFS,,,,,,,,,1.0,,
+AHSE_global,,,,,,,,,,1.0,
+AHSE,,,,,,,,,,,1.0

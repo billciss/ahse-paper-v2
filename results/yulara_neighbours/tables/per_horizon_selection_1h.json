@@ -1,0 +1,100 @@
+{
+ "reference": "N-HiTS",
+ "decisions": {
+  "first_hour": {
+   "steps": [
+    0,
+    1
+   ],
+   "chosen": [
+    "LightGBM",
+    "XGBoost",
+    "N-HiTS"
+   ],
+   "val_mae_chosen": 0.06757845060672553,
+   "val_mae_reference": 0.07485249060562861,
+   "lcb_gain": 0.0058870010293014825,
+   "oracle_on_test": [
+    "LightGBM",
+    "XGBoost",
+    "N-HiTS"
+   ]
+  },
+  "1_to_6h": {
+   "steps": [
+    1,
+    6
+   ],
+   "chosen": [
+    "XGBoost",
+    "N-HiTS",
+    "LightGBM",
+    "PatchTST"
+   ],
+   "val_mae_chosen": 0.1012272104426229,
+   "val_mae_reference": 0.10815468847059487,
+   "lcb_gain": 0.004669918514268416,
+   "oracle_on_test": [
+    "XGBoost",
+    "N-HiTS"
+   ]
+  },
+  "6h_to_end": {
+   "steps": [
+    6,
+    24
+   ],
+   "chosen": [
+    "SmartPersistence",
+    "N-HiTS",
+    "XGBoost"
+   ],
+   "val_mae_chosen": 0.11281807109407181,
+   "val_mae_reference": 0.12259974286768796,
+   "lcb_gain": 0.007427752189878425,
+   "oracle_on_test": [
+    "SmartPersistence",
+    "N-HiTS",
+    "XGBoost"
+   ]
+  }
+ },
+ "test": {
+  "reference_best_single(N-HiTS)": {
+   "MAE": 0.11763,
+   "RMSE": 0.18043,
+   "R2": 0.4499,
+   "Skill_Score_Daily": 0.2988,
+   "MAE_first_hour": 0.07699,
+   "MAE_1_to_6h": 0.10526,
+   "MAE_6h_to_end": 0.12332
+  },
+  "AHSE_global": {
+   "MAE": 0.10838,
+   "RMSE": 0.16994,
+   "R2": 0.512,
+   "Skill_Score_Daily": 0.378,
+   "MAE_first_hour": 0.07418,
+   "MAE_1_to_6h": 0.09922,
+   "MAE_6h_to_end": 0.11281
+  },
+  "per_horizon_selection": {
+   "MAE": 0.1073,
+   "RMSE": 0.17093,
+   "R2": 0.5063,
+   "Skill_Score_Daily": 0.3707,
+   "MAE_first_hour": 0.06963,
+   "MAE_1_to_6h": 0.09945,
+   "MAE_6h_to_end": 0.11157
+  },
+  "per_block_oracle (upper bound)": {
+   "MAE": 0.10722,
+   "RMSE": 0.17075,
+   "R2": 0.5073,
+   "Skill_Score_Daily": 0.372,
+   "MAE_first_hour": 0.06963,
+   "MAE_1_to_6h": 0.09905,
+   "MAE_6h_to_end": 0.11157
+  }
+ }
+}

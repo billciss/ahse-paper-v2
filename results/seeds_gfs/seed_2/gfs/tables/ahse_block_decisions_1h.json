@@ -1,0 +1,44 @@
+{
+ "reference": "XGBoost",
+ "decisions": {
+  "first_hour": {
+   "steps": [
+    0,
+    1
+   ],
+   "chosen": [
+    "XGBoost",
+    "LightGBM",
+    "N-HiTS",
+    "PatchTST"
+   ],
+   "val_mae_chosen": 0.0646829437861679,
+   "val_mae_reference": 0.06729077249400858,
+   "lcb_gain": 0.0011597400346332906
+  },
+  "1_to_6h": {
+   "steps": [
+    1,
+    6
+   ],
+   "chosen": [
+    "XGBoost"
+   ],
+   "val_mae_chosen": 0.08693132350131284,
+   "val_mae_reference": 0.08693132350131284,
+   "lcb_gain": 0.0
+  },
+  "6h_to_end": {
+   "steps": [
+    6,
+    24
+   ],
+   "chosen": [
+    "XGBoost"
+   ],
+   "val_mae_chosen": 0.09343640532251728,
+   "val_mae_reference": 0.09343640532251728,
+   "lcb_gain": 0.0
+  }
+ }
+}

@@ -1,0 +1,44 @@
+% ============================================================
+% 07_conclusion.tex  (revised 2026-10)
+% ============================================================
+
+This paper revisited an adaptive ensemble for photovoltaic forecasting with the aim of making
+its evaluation honest and reproducible, and extended it with archived weather forecasts and
+calibrated prediction intervals. Hourly forecasts for lead times of 1 to 24~h were evaluated in
+power on two contrasting sites: the four uncurtailed sites of the Yulara off-grid mini-grid
+(hot desert, 768~kW) and the NIST Ground array (humid subtropical, 271~kW).
+
+\paragraph{Key findings.}
+\begin{itemize}
+  \item The Yulara series used in earlier studies, the Desert Gardens site, is curtailed around
+  noon; we estimate that half of its available energy (31.7--59.1\%) was not delivered. Benchmarks
+  on such a series forecast a dispatch rule rather than the solar resource.
+
+  \item Archived GFS forecasts, used only when published before the forecast issue time, are the
+  main source of skill: they lower the MAE of AHSE by 13\% at Yulara (36.18 $\to$ 31.32~kW,
+  significant for each of five seeds) and by 26\% at NIST (27.55 $\to$ 20.39~kW), with gains
+  growing with the lead time.
+
+  \item The per-horizon-block selection with a day-level bootstrap guard combines models only
+  where the validation evidence supports it. It beats the best single model of every seed by
+  7--10\% at Yulara without weather forecasts and, when one member dominates (GFS-fed XGBoost),
+  falls back to it; it was never significantly worse than the best member in hindsight.
+
+  \item Out-of-fold, Mondrian and adaptive conformal calibration give 90\% intervals with
+  0.90--0.92 coverage on the test periods; weather forecasts narrow them by 17\% at Yulara, and
+  calibrating them by the GFS clearness index gives the best interval score at both sites.
+
+  \item Evaluation choices matter: the MAE of the clearness index and the MAE alone can reverse
+  the ranking of close models, so results should be reported in power with a squared-error skill
+  score and day-level significance tests.
+\end{itemize}
+
+\paragraph{Future work.}
+The work opens three directions linked to resilient microgrids. First, forecasting the
+\emph{available} power of curtailed sites, reconstructed from uncurtailed neighbours, would give
+the operator of an off-grid mini-grid the information needed to schedule its gas generators and
+storage instead of reproducing past curtailment decisions. Second, ensemble weather predictions
+and probabilistic members would allow the prediction intervals to reflect weather uncertainty
+directly, for reserve sizing and risk-aware dispatch. Third, the honest selection protocol can be
+coupled with physics-informed models of the PV array and the microgrid, to keep the forecasts
+consistent with the physical limits that a dispatch controller has to respect.

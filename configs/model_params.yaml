@@ -1,0 +1,135 @@
+# ============================================================
+# HYPERPARAMÈTRES DES MODÈLES SOTA (MASTER THESIS)
+# ============================================================
+
+# 1. PARAMÈTRES D'ENTRAÎNEMENT GÉNÉRAUX
+# -------------------------------------
+training_global:
+  epochs: 100
+  batch_size: 64
+  early_stopping_patience: 15
+  learning_rate_default: 0.001
+  weight_decay: 1.0e-5
+  gradient_clip_max_norm: 1.0
+  scheduler:
+    type: "reduce_on_plateau"
+    factor: 0.5
+    patience: 5
+    min_lr: 1.0e-6
+
+# 2. PATCHTST (Transformer-based SOTA)
+# ------------------------------------
+# Référence: Nie et al., "A Time Series is Worth 64 Words" (ICLR 2023)
+patch_tst:
+  patch_len: 16           # Taille des "patchs" de données
+  stride: 8               # Chevauchement des patchs
+  d_model: 128            # Dimension de l'espace latent
+  n_heads: 8              # Têtes d'attention
+  n_layers: 3             # Couches d'encodeur
+  d_ff: 256               # Dimension feedforward
+  dropout: 0.2
+  channel_independence: true    # Chaque feature est traitée séparément
+  positional_encoding: "learnable"  # Options: "learnable", "sinusoidal"
+  activation: "gelu"
+  norm_type: "layer"      # Options: "layer", "batch"
+  learning_rate: 0.0001
+
+# 3. N-HITS (Hierarchical Interpolation)
+# --------------------------------------
+# Référence: Challu et al., "N-HiTS: Neural Hierarchical Interpolation" (AAAI 2023)
+n_hits:
+  n_blocks: [3, 3, 3]           # 3 stacks avec 3 blocs chacun
+  mlp_units: [[512, 512], [512, 512], [512, 512]]
+  pooling_sizes: [4, 2, 1]      # Sous-échantillonnage multi-résolution
+  downsample_freqs: [4, 2, 1]   # Fréquences de downsampling
+  interpolation_mode: "linear"
+  dropout: 0.1
+  activation: "relu"
+  batch_normalization: true
+  learning_rate: 0.001
+
+# 4. LSTM AMÉLIORÉ
+# ----------------
+lstm:
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.2
+  bidirectional: false
+  learning_rate: 0.0005
+
+# 5. GRU AMÉLIORÉ  
+# ---------------
+gru:
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.2
+  bidirectional: false
+  learning_rate: 0.0005
+
+# 6. TRANSFORMER CORRIGÉ (avec Positional Encoding)
+# -------------------------------------------------
+transformer:
+  d_model: 64
+  n_heads: 4
+  n_layers: 2
+  d_ff: 128
+  dropout: 0.1
+  positional_encoding: "sinusoidal"  # CRITIQUE: sans cela l'attention ignore l'ordre
+  learning_rate: 0.001
+
+# 7. MODÈLES DE GRADIENT BOOSTING (Multi-Output)
+# ----------------------------------------------
+gradient_boosting:
+  lightgbm:
+    n_estimators: 1000
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: 8
+    min_child_samples: 20
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.1
+    reg_lambda: 0.1
+    multi_output: true    # Prédit les 96 points simultanément
+
+  xgboost:
+    n_estimators: 1000
+    learning_rate: 0.05
+    max_depth: 8
+    min_child_weight: 1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.1
+    reg_lambda: 0.1
+    multi_output: true
+
+# 8. ENSEMBLE ADAPTATIF (AHSE)
+# ----------------------------
+# 8. ENSEMBLE ADAPTATIF (AHSE)
+# ----------------------------
+ahse:
+  dominance_threshold: 0.30
+  adaptive_gap: 0.15
+  gating_threshold: 0.15      # CORRIGÉ (anciennement gating_threshold_variance)
+  lookback_variance: 12       # CORRIGÉ (anciennement lookback_variance_window)
+  min_improvement: 0.5   # Abaissé de 1.0 → 0.5 : Average(XGBoost+LightGBM) donne 0.74% → sélectionné
+
+# 9. MODÈLES DE RÉFÉRENCE (BASELINES)
+# -----------------------------------
+baselines:
+  persistence:
+    enabled: true
+    description: "Prédit la dernière valeur observée"
+    
+  smart_persistence:
+    enabled: true
+    description: "Persistance + correction saisonnière"
+    seasonal_period: 96     # 24h à 15min
+
+# 10. FONCTIONS DE PERTE
+# ----------------------
+loss_functions:
+  primary: "mse"                # Pour l'entraînement
+  pinball:
+    enabled: true               # Pour la prévision probabiliste
+    quantiles: [0.1, 0.5, 0.9]

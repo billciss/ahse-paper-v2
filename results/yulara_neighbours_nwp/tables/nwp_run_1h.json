@@ -1,0 +1,15 @@
+{
+ "period_end": "2018-12-31",
+ "n_train": 12988,
+ "n_val": 4668,
+ "n_test": 3842,
+ "missing_gfs_share": {
+  "train": 0.0003,
+  "val": 0.1491,
+  "test": 0.0
+ },
+ "train_seconds": {
+  "lgbm_no_nwp": 458.3,
+  "lgbm_nwp": 655.0
+ }
+}

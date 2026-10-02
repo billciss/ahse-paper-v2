@@ -1,0 +1,236 @@
+{
+ "yulara no_gfs results/yulara_neighbours: N-HiTS (best single) vs AHSE": {
+  "mae_a": 40.3253147233358,
+  "mae_b": 36.52674475227048,
+  "gain_b_over_a": 3.7985699710653194,
+  "gain_ci95": [
+   2.9673755617195066,
+   4.63212185573283
+  ],
+  "dm_stat": 7.233662390134527,
+  "dm_p_two_sided": 4.701396738117404e-13,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara no_gfs results/seeds_gfs/seed_1/no_gfs: GRU (best single) vs AHSE": {
+  "mae_a": 39.21938585560086,
+  "mae_b": 35.918033197802146,
+  "gain_b_over_a": 3.3013526577987165,
+  "gain_ci95": [
+   2.5922068445341786,
+   4.022259568555767
+  ],
+  "dm_stat": 6.8206032220006,
+  "dm_p_two_sided": 9.065901913288709e-12,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara no_gfs results/seeds_gfs/seed_2/no_gfs: PatchTST (best single) vs AHSE": {
+  "mae_a": 39.204496559765126,
+  "mae_b": 36.38898817451654,
+  "gain_b_over_a": 2.8155083852485845,
+  "gain_ci95": [
+   2.031356721621109,
+   3.602633246258529
+  ],
+  "dm_stat": 4.961101509671196,
+  "dm_p_two_sided": 7.009454696924126e-07,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara no_gfs results/seeds_gfs/seed_3/no_gfs: N-HiTS (best single) vs AHSE": {
+  "mae_a": 40.194090906442185,
+  "mae_b": 36.27239386805434,
+  "gain_b_over_a": 3.9216970383878476,
+  "gain_ci95": [
+   2.862055020410949,
+   4.930346720920316
+  ],
+  "dm_stat": 5.244469365981055,
+  "dm_p_two_sided": 1.567327429978419e-07,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara no_gfs results/seeds_gfs/seed_4/no_gfs: PatchTST (best single) vs AHSE": {
+  "mae_a": 39.001260130697695,
+  "mae_b": 35.78231326065408,
+  "gain_b_over_a": 3.2189468700436166,
+  "gain_ci95": [
+   2.428026919372741,
+   4.02693239659552
+  ],
+  "dm_stat": 5.531870649957672,
+  "dm_p_two_sided": 3.168335191144923e-08,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara gfs results/yulara_neighbours_gfs: XGBoost (best single) vs AHSE": {
+  "mae_a": 31.423659737992754,
+  "mae_b": 31.38114893344123,
+  "gain_b_over_a": 0.04251080455152234,
+  "gain_ci95": [
+   0.02613270894079829,
+   0.05920647077722508
+  ],
+  "dm_stat": 4.528063428108149,
+  "dm_p_two_sided": 5.952671536675891e-06,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara gfs results/seeds_gfs/seed_1/gfs: XGBoost (best single) vs AHSE": {
+  "mae_a": 31.293102926404767,
+  "mae_b": 31.293102926404767,
+  "gain_b_over_a": 0.0,
+  "gain_ci95": [
+   0.0,
+   0.0
+  ],
+  "dm_stat": NaN,
+  "dm_p_two_sided": NaN,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara gfs results/seeds_gfs/seed_2/gfs: XGBoost (best single) vs AHSE": {
+  "mae_a": 31.31958052376538,
+  "mae_b": 31.3268999246815,
+  "gain_b_over_a": -0.007319400916117047,
+  "gain_ci95": [
+   -0.026693239893345065,
+   0.011283081034177245
+  ],
+  "dm_stat": -0.6180021367043137,
+  "dm_p_two_sided": 0.5365739301369042,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara gfs results/seeds_gfs/seed_3/gfs: XGBoost (best single) vs AHSE": {
+  "mae_a": 31.278477239969206,
+  "mae_b": 31.239875071648225,
+  "gain_b_over_a": 0.03860216832098118,
+  "gain_ci95": [
+   0.02457340615506549,
+   0.05240642625089541
+  ],
+  "dm_stat": 4.705340330857165,
+  "dm_p_two_sided": 2.5344279893549466e-06,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara gfs results/seeds_gfs/seed_4/gfs: XGBoost (best single) vs AHSE": {
+  "mae_a": 31.39113128910798,
+  "mae_b": 31.3439632408698,
+  "gain_b_over_a": 0.04716804823818066,
+  "gain_ci95": [
+   0.03268049732303673,
+   0.0621826574100698
+  ],
+  "dm_stat": 5.199478527743261,
+  "dm_p_two_sided": 1.9984841131782676e-07,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara AHSE no_gfs vs gfs: results/yulara_neighbours -> results/yulara_neighbours_gfs": {
+  "mae_a": 36.52674475227048,
+  "mae_b": 31.38114893344123,
+  "gain_b_over_a": 5.14559581882925,
+  "gain_ci95": [
+   3.3512388433351403,
+   7.022651609402842
+  ],
+  "dm_stat": 3.7531761606030196,
+  "dm_p_two_sided": 0.00017460805899335757,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara AHSE no_gfs vs gfs: results/seeds_gfs/seed_1/no_gfs -> results/seeds_gfs/seed_1/gfs": {
+  "mae_a": 35.918033197802146,
+  "mae_b": 31.293102926404767,
+  "gain_b_over_a": 4.624930271397378,
+  "gain_ci95": [
+   2.8467705798094896,
+   6.526498579253176
+  ],
+  "dm_stat": 3.292908153559316,
+  "dm_p_two_sided": 0.0009915686052737469,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara AHSE no_gfs vs gfs: results/seeds_gfs/seed_2/no_gfs -> results/seeds_gfs/seed_2/gfs": {
+  "mae_a": 36.38898817451654,
+  "mae_b": 31.3268999246815,
+  "gain_b_over_a": 5.062088249835043,
+  "gain_ci95": [
+   3.3103171603429877,
+   6.95841257103829
+  ],
+  "dm_stat": 3.614523843096981,
+  "dm_p_two_sided": 0.0003009001250809518,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara AHSE no_gfs vs gfs: results/seeds_gfs/seed_3/no_gfs -> results/seeds_gfs/seed_3/gfs": {
+  "mae_a": 36.27239386805434,
+  "mae_b": 31.239875071648225,
+  "gain_b_over_a": 5.032518796406112,
+  "gain_ci95": [
+   3.1696320021847364,
+   6.986027031596486
+  ],
+  "dm_stat": 3.4279345356420774,
+  "dm_p_two_sided": 0.0006081921011847945,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "yulara AHSE no_gfs vs gfs: results/seeds_gfs/seed_4/no_gfs -> results/seeds_gfs/seed_4/gfs": {
+  "mae_a": 35.78231326065408,
+  "mae_b": 31.3439632408698,
+  "gain_b_over_a": 4.438350019784277,
+  "gain_ci95": [
+   2.6839270747066606,
+   6.280044285934647
+  ],
+  "dm_stat": 3.1585417957969155,
+  "dm_p_two_sided": 0.001585605711306126,
+  "n_days": 283,
+  "nw_lags": 5
+ },
+ "nist no_gfs results/nist: XGBoost (best single) vs AHSE": {
+  "mae_a": 27.838571507148625,
+  "mae_b": 27.554114563516315,
+  "gain_b_over_a": 0.28445694363231055,
+  "gain_ci95": [
+   -0.1051663892051648,
+   0.6603055088414237
+  ],
+  "dm_stat": 1.2203503001666713,
+  "dm_p_two_sided": 0.22233210927043434,
+  "n_days": 128,
+  "nw_lags": 4
+ },
+ "nist gfs results/nist_gfs: XGBoost (best single) vs AHSE": {
+  "mae_a": 20.470961413259683,
+  "mae_b": 20.388047624101223,
+  "gain_b_over_a": 0.08291378915846082,
+  "gain_ci95": [
+   -0.04759313112757208,
+   0.21593607849255886
+  ],
+  "dm_stat": 0.7031394260499962,
+  "dm_p_two_sided": 0.48196886412040807,
+  "n_days": 128,
+  "nw_lags": 4
+ },
+ "nist AHSE no_gfs vs gfs: results/nist -> results/nist_gfs": {
+  "mae_a": 27.554114563516315,
+  "mae_b": 20.388047624101223,
+  "gain_b_over_a": 7.166066939415092,
+  "gain_ci95": [
+   5.513983732260382,
+   8.915327688582
+  ],
+  "dm_stat": 5.650860617187418,
+  "dm_p_two_sided": 1.5964650632330863e-08,
+  "n_days": 128,
+  "nw_lags": 4
+ }
+}

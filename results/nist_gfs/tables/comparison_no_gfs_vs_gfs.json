@@ -1,0 +1,159 @@
+{
+ "tests": {
+  "AHSE: A vs B": {
+   "mae_a": 0.22522642246375524,
+   "mae_b": 0.1599892964004117,
+   "gain_b_over_a": 0.06523712606334353,
+   "gain_ci95": [
+    0.052561092596464666,
+    0.0789582254212035
+   ],
+   "dm_stat": 6.602542601301716,
+   "dm_p_two_sided": 4.041650777024006e-11,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "AHSE_global: A vs B": {
+   "mae_a": 0.21962840036328574,
+   "mae_b": 0.16179902173787705,
+   "gain_b_over_a": 0.057829378625408684,
+   "gain_ci95": [
+    0.045177046437687884,
+    0.07181485057536063
+   ],
+   "dm_stat": 6.155343582183234,
+   "dm_p_two_sided": 7.491490323100635e-10,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "LightGBM: A vs B": {
+   "mae_a": 0.22260730178184124,
+   "mae_b": 0.16272239434773852,
+   "gain_b_over_a": 0.05988490743410271,
+   "gain_ci95": [
+    0.047134035756575425,
+    0.07371826275947535
+   ],
+   "dm_stat": 6.291279408445766,
+   "dm_p_two_sided": 3.1486001151657545e-10,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "XGBoost: A vs B": {
+   "mae_a": 0.21962840036328574,
+   "mae_b": 0.16179902173787705,
+   "gain_b_over_a": 0.057829378625408684,
+   "gain_ci95": [
+    0.045177046437687884,
+    0.07181485057536063
+   ],
+   "dm_stat": 6.155343582183234,
+   "dm_p_two_sided": 7.491490323100635e-10,
+   "n_days": 128,
+   "nw_lags": 4
+  },
+  "XGBoost (A) vs AHSE (B)": {
+   "mae_a": 0.21962840036328574,
+   "mae_b": 0.1599892964004117,
+   "gain_b_over_a": 0.05963910396287403,
+   "gain_ci95": [
+    0.047134452628950094,
+    0.07344071927099431
+   ],
+   "dm_stat": 6.371454803428095,
+   "dm_p_two_sided": 1.8724347418024653e-10,
+   "n_days": 128,
+   "nw_lags": 4
+  }
+ },
+ "block_decisions": {
+  "A": {
+   "reference": "XGBoost",
+   "decisions": {
+    "first_hour": {
+     "steps": [
+      0,
+      1
+     ],
+     "chosen": [
+      "XGBoost"
+     ],
+     "val_mae_chosen": 0.144663275742012,
+     "val_mae_reference": 0.144663275742012,
+     "lcb_gain": 0.0
+    },
+    "1_to_6h": {
+     "steps": [
+      1,
+      6
+     ],
+     "chosen": [
+      "XGBoost"
+     ],
+     "val_mae_chosen": 0.24584276265214974,
+     "val_mae_reference": 0.24584276265214974,
+     "lcb_gain": 0.0
+    },
+    "6h_to_end": {
+     "steps": [
+      6,
+      24
+     ],
+     "chosen": [
+      "XGBoost",
+      "LightGBM",
+      "PatchTST",
+      "GRU"
+     ],
+     "val_mae_chosen": 0.2885514002767199,
+     "val_mae_reference": 0.2921468702710372,
+     "lcb_gain": 0.00012003300571141694
+    }
+   }
+  },
+  "B": {
+   "reference": "XGBoost",
+   "decisions": {
+    "first_hour": {
+     "steps": [
+      0,
+      1
+     ],
+     "chosen": [
+      "XGBoost",
+      "LightGBM"
+     ],
+     "val_mae_chosen": 0.1283919323987444,
+     "val_mae_reference": 0.13011487959689103,
+     "lcb_gain": 0.00047008683165399717
+    },
+    "1_to_6h": {
+     "steps": [
+      1,
+      6
+     ],
+     "chosen": [
+      "XGBoost",
+      "LightGBM"
+     ],
+     "val_mae_chosen": 0.17365246166766143,
+     "val_mae_reference": 0.17484972489586217,
+     "lcb_gain": 0.0001349244117906455
+    },
+    "6h_to_end": {
+     "steps": [
+      6,
+      24
+     ],
+     "chosen": [
+      "XGBoost",
+      "LightGBM"
+     ],
+     "val_mae_chosen": 0.177657088284256,
+     "val_mae_reference": 0.1785055758971133,
+     "lcb_gain": 0.00016697568525563105
+    }
+   }
+  }
+ }
+}
